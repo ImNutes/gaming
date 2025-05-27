@@ -4,34 +4,25 @@
 
 #include "player.hh"
 
-//I could also use ECS for this
+const size_t MAX_ENTITY_COUNT = 500;
 
-template <typename T>
-class ObjectManager {
-public:
-ObjectManager(std::vector<T> objects) : m_objects{objects} {}
-int add(T obj) { m_objects.push_back(obj); return m_objects.size() - 1; }
-T& get(int index) { return m_objects[index]; }
-void remove(int index) {
-    m_objects.erase(m_objects.begin() + index);
-}
-virtual void updateObject(T obj) = 0;
-virtual void update() {
-    for(auto i : m_objects) {
-        updateObject(i);
-    }
-}
 
-private:
-std::vector<T> m_objects;
+class WorldObject {
+    
 };
 
-class ObstaclesManager : ObjectManager<Obstacle> {
+
+//manages stuff in the world (but not the player)
+class ObjectsManager {
 public:
-ObstaclesManager(std::vector<Obstacle> obj) : ObjectManager(obj) {}
-void updateObject(Obstacle obj) override;
+ObjectsManager(std::vector<WorldObject> obj = std::vector<WorldObject>()) : obj{obstacles} {};
+void updateObject(WorldObject obj);
+void update();
+void drawObject(WorldObject obj);
+void draw();
 private:
-float speed;
+std::vector<WorldObject> m_world_objects;
+float m_worldspeed;
 };
 
 #endif
