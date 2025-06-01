@@ -6,6 +6,7 @@ Game::Game() : frame{0}, camera{}, player{(Vector3){0.0f, 0.0f, 0.0f}}, objects{
     camera.fovy = 80.0f;
     camera.projection = CAMERA_PERSPECTIVE;
     updateCam();
+
 }
 
 void Game::updateDrawFrame() {
@@ -16,20 +17,20 @@ void Game::updateDrawFrame() {
 
 void Game::update() {
     if(IsKeyDown(KEY_RIGHT)) {
-        player.direction = 1;
+        objects.direction = 1;
     } else if(IsKeyDown(KEY_LEFT)) {
-        player.direction = -1;
+        objects.direction = -1;
     } else {
-        player.direction = 0;
+        objects.direction = 0;
     }
     if( frame % 45 == 0 ) {
-        float left_bound = player.position.x - SPAWNING_RADIUS;
-        float right_bound = player.position.x + SPAWNING_RADIUS;
+        float left_bound = -SPAWNING_RADIUS;
+        float right_bound = SPAWNING_RADIUS;
 
-        WorldObject obj{ 1.0f, (Vector3){(float)GetRandomValue(left_bound, right_bound), 0.0f, -SPAWNING_DISTANCE} };
+        WorldObject obj{ 1.0f, (Vector3){(float)GetRandomValue(left_bound, right_bound), 0.0f, -SPAWNING_DISTANCE}, (Vector3){ 2.0f, 2.0f, 2.0f}, CollisionType::BOX };
         objects.registerObject(obj);
     }
-    objects.update();
+    objects.update(player.collision);
     player.update();
     updateCam();
 }
@@ -50,6 +51,6 @@ void Game::draw() {
 }
 
 void Game::updateCam() {
-    camera.position = Vector3Add(player.position, (Vector3){0.0f, 5.0f, 10.0f});
-    camera.target = Vector3Add(player.position, (Vector3){0.0f, 1.0f, 0.0f});
+    camera.position = (Vector3){0.0f, 5.0f, 10.0f};
+    camera.target = (Vector3){0.0f, 1.0f, 0.0f};
 }
