@@ -23,39 +23,27 @@ bool ObjectsManager::updateObject(WorldObject &obj) {
 
 int ObjectsManager::update(BoundingBox b) {
     int res = -1;
-    if(direction > 0) {
+    if(direction < 0) {
         velocity.x = std::max(MAX_SPEED * direction, velocity.x + (ACCEL * direction));
-    } else if(direction < 0) {
+    } else if(direction > 0) {
         velocity.x = std::min(MAX_SPEED * direction, velocity.x + (ACCEL * direction));
     } else {
         if(velocity.x > 0) {
-            velocity.x = std::min(0.0f, velocity.x + ACCEL);
-        } else if(velocity.x < 0) {
             velocity.x = std::max(0.0f, velocity.x - ACCEL);
+        } else if(velocity.x < 0) {
+            velocity.x = std::min(0.0f, velocity.x + ACCEL);
         }
     }
-    for(auto i : planes) {
-        Vector3Add(relative_position, velocity);
-    }
-    if( relative_position.x >= PLANE_WIDTH) {
-        relative_position.x = -PLANE_WIDTH;
-        plane_index++;
 
-    } else if( relative_position.x <= -PLANE_WIDTH ) {
-        relative_position.x = PLANE_WIDTH;
-        plane_index--;
-    }
-    if( relative_position.y >= PLANE_LENGTH) {
-        relative_position.y = -PLANE_LENGTH;
-        plane_index += plane_index < 3 ? 3 : -3;
-    }
     for(size_t i = 0; i < m_world_objects.size(); ++i) {
         if(!updateObject(m_world_objects[i])) {
             m_world_objects.erase(m_world_objects.begin() + i);
         } else if( checkCollision(b, m_world_objects[i]) ) {
+            std::cout << "ouch";
             res = i;
         }
     }
+    return res;
 }
 
 size_t ObjectsManager::registerObject(WorldObject obj) {
@@ -75,7 +63,4 @@ void ObjectsManager::draw() {
     for(auto i : m_world_objects)
         drawObject(i);
 
-    for(auto i : planes) {
-        
-    }
 }

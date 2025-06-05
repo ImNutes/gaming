@@ -17,9 +17,9 @@ void Game::updateDrawFrame() {
 
 void Game::update() {
     if(IsKeyDown(KEY_RIGHT)) {
-        objects.direction = 1;
-    } else if(IsKeyDown(KEY_LEFT)) {
         objects.direction = -1;
+    } else if(IsKeyDown(KEY_LEFT)) {
+        objects.direction = 1;
     } else {
         objects.direction = 0;
     }
@@ -37,12 +37,11 @@ void Game::update() {
 
 void Game::draw() {
     BeginDrawing();
-
+   ClearBackground(RAYWHITE);
     BeginMode3D(camera);
-       ClearBackground(RAYWHITE);
        objects.draw();
        player.draw();
-       DrawGrid(500, 1.0f);
+       //DrawGrid(500, 1.0f);
     EndMode3D();
 
     DrawText("Raylib 3D a ", 10, 40, 20, DARKGRAY);

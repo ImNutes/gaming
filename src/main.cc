@@ -1,11 +1,13 @@
+#if defined(PLATFORM_WEB)
 #include <emscripten.h>
+#endif
 #include "raylib.h"
 #include "rlgl.h"
 #include <iostream>
 
 #include "game.hh"
 
-Game game;
+Game game{};
 //is there a better way to do this
 void doFrame() {
    game.updateDrawFrame(); 
@@ -20,7 +22,6 @@ int main() {
         emscripten_set_main_loop( doFrame, 60, 1);
     #else
         SetTargetFPS(60);
-
     while(!WindowShouldClose()) {
         doFrame();
     }

@@ -8,7 +8,7 @@
 #include "player.hh"
 
 const float SPAWNING_RADIUS = 5.0f;
-const float SPAWNING_DISTANCE = 20.0f;
+const float SPAWNING_DISTANCE = 50.0f;
 class Game {
 public:
 Game();

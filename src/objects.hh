@@ -5,10 +5,10 @@
 #include "player.hh"
 
 const size_t MAX_ENTITY_COUNT = 500;
-const int WORLD_LIMIT = 250;
+const int WORLD_LIMIT = 20;
 
-const float ACCEL = 0.2f;
-const float MAX_SPEED = 2.0f;
+const float ACCEL = 0.1f;
+const float MAX_SPEED = 1.0f;
 
 const size_t PLANES_COUNT = 6;
 const float PLANE_WIDTH = 25.0f;
@@ -38,24 +38,15 @@ CollisionType type;
 //manages stuff in the world (but not the player)
 class ObjectsManager {
 public:
-ObjectsManager(std::vector<WorldObject> obj = std::vector<WorldObject>()) : m_world_objects{obj}, m_worldspeed{1} {
-    planes[0] = LoadModelFromMesh( GenMeshPlane(25.0f, 25.0f, 5, 5) );
-    planes[1] = LoadModelFromMesh( GenMeshPlane(25.0f, 25.0f, 5, 5) );
-    planes[2] = LoadModelFromMesh( GenMeshPlane(25.0f, 25.0f, 5, 5) );
-    planes[3] = LoadModelFromMesh( GenMeshPlane(25.0f, 25.0f, 5, 5) );
-    planes[4] = LoadModelFromMesh( GenMeshPlane(25.0f, 25.0f, 5, 5) );
-    planes[5] = LoadModelFromMesh( GenMeshPlane(25.0f, 25.0f, 5, 5) );
+ObjectsManager() : m_world_objects{}, m_worldspeed{1} {
 
 };
 
 ~ObjectsManager() {
-    for(auto i : planes) {
-        UnloadModel(i);
-    }
 }
 void setWorldSpeed(int worldspeed) { m_worldspeed = worldspeed; }
 
-int ObjectsManager::checkCollision(BoundingBox b, WorldObject obj);
+int checkCollision(BoundingBox b, WorldObject obj);
 
 size_t registerObject(WorldObject obj);
 void destroyObject(size_t i);
@@ -77,8 +68,7 @@ float m_worldspeed;
 //handles the relative player movement
 Vector3 velocity;
 
-Model planes[ PLANES_COUNT ];
-
+Model planes[PLANES_COUNT];
 Vector3 relative_position; //location of the player in relation to the plane
 size_t plane_index; //which plane the player is on
 };
