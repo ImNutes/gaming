@@ -44,7 +44,7 @@ void Game::draw() {
        //DrawGrid(500, 1.0f);
     EndMode3D();
 
-    DrawText("Raylib 3D a ", 10, 40, 20, DARKGRAY);
+    DrawText("Raylib 3D ab", 10, 40, 20, DARKGRAY);
     DrawText( std::to_string( objects.getCount() ).c_str(), 10, 70, 20, DARKGRAY );
     EndDrawing();
 }

@@ -35,6 +35,18 @@ int ObjectsManager::update(BoundingBox b) {
         }
     }
 
+    relative_position = Vector3Add(relative_position, velocity);
+    if(relative_position.x > PLANE_WIDTH/2) {
+        relative_position.x = -PLANE_WIDTH/2;
+        plane_index = (++plane_index + PLANES_COUNT/2) % PLANES_COUNT;
+    } else if(relative_position.x < -PLANE_WIDTH/2) {
+        relative_position.x = PLANE_WIDTH/2;
+        plane_index = (--plane_index + PLANES_COUNT) % PLANES_COUNT;
+    }
+    if(relative_position.z < PLANE_LENGTH/2) {
+        relative_position.z = PLANE_LENGTH/2;
+        plane_offset = !plane_offset;
+    }
     for(size_t i = 0; i < m_world_objects.size(); ++i) {
         if(!updateObject(m_world_objects[i])) {
             m_world_objects.erase(m_world_objects.begin() + i);
@@ -63,4 +75,5 @@ void ObjectsManager::draw() {
     for(auto i : m_world_objects)
         drawObject(i);
 
+    
 }

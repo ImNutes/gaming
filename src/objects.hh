@@ -1,7 +1,7 @@
 #ifndef OBJECTS_HH
 #define OBJECTS_HH
 #include <vector>
-
+#include <array>
 #include "player.hh"
 
 const size_t MAX_ENTITY_COUNT = 500;
@@ -39,10 +39,18 @@ CollisionType type;
 class ObjectsManager {
 public:
 ObjectsManager() : m_world_objects{}, m_worldspeed{1} {
-
+    planes[0][0] = LoadModelFromMesh(GenMeshPlane(25.0f, 25.0f, 5.0f, 5.0f));
+    planes[0][1] = LoadModelFromMesh(GenMeshPlane(25.0f, 25.0f, 5.0f, 5.0f));
+    planes[0][2] = LoadModelFromMesh(GenMeshPlane(25.0f, 25.0f, 5.0f, 5.0f));
+    planes[1][0] = LoadModelFromMesh(GenMeshPlane(25.0f, 25.0f, 5.0f, 5.0f));
+    planes[1][1] = LoadModelFromMesh(GenMeshPlane(25.0f, 25.0f, 5.0f, 5.0f));
+    planes[1][2] = LoadModelFromMesh(GenMeshPlane(25.0f, 25.0f, 5.0f, 5.0f));
 };
 
 ~ObjectsManager() {
+    for(auto i : planes)
+        for(auto j : i)
+            UnloadModel(j);
 }
 void setWorldSpeed(int worldspeed) { m_worldspeed = worldspeed; }
 
@@ -68,9 +76,10 @@ float m_worldspeed;
 //handles the relative player movement
 Vector3 velocity;
 
-Model planes[PLANES_COUNT];
+std::array<std::array<Model, 6> , 2> planes;
 Vector3 relative_position; //location of the player in relation to the plane
 size_t plane_index; //which plane the player is on
+size_t plane_offset; //which of the arrays of planes is currently 'active'
 };
 
 #endif

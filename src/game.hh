@@ -23,7 +23,6 @@ int frame;
 Camera3D camera;
 Player player;
 ObjectsManager objects;
-
 };
 
 #endif
